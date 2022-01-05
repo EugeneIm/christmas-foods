@@ -1,21 +1,26 @@
-const express = require('express')
+const express = require("express");
+const app = express();
 
-const app = express()
 app.use(express.json())
 
+const agents = [
+  {
+    id: 1,
+    name: "Jett",
+    type: "Duelists"
+  }
+]
 
-const food = ["Roast Turkey", "Mince Pie", "Stuffing", "Yule Log"]
-app.get("/api/foods", (req, res) => {
-    res.send(food)
-    //const foods = food[Math.floor(Math.random()*food.length)]
-    //res.send(foods)
+app.get("/api/agents", (req, res) => {
+  res.send({agent: agents})
+});
+
+app.post("/api/agents", (req, res) => {
+  const data = req.body
+  data.id = agents.length+1
+  agents.push(data)
+  res.send(data)
 })
 
-app.post("/api/foods", (req, res) => {
-    
-    const foodNames = req.body.name
-    food.push(foodNames)
-    res.send(req.body)
-})
-
-app.listen(8080, () => console.log('listening on port 8080'))
+const port = process.env.PORT || 8080
+app.listen(port, () => console.log(`listening on port ${port}`))
